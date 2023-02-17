@@ -186,6 +186,12 @@ GROUP BY fruit_a
 HAVING count(basket_a.id) > 3
 ORDER BY fruit_a;
 
+SELECT fruit_a, count(*)
+FROM basket_a, basket_b
+WHERE basket_a.id > basket_b.id
+GROUP BY fruit_a
+ORDER BY fruit_a;
+
 -- The CROSS JOIN with an equality condition is equivalent to an INNER JOIN;
 -- This is the most common type of join, and so can be written as just JOIN
 
