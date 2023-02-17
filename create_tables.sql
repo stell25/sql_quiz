@@ -1,26 +1,38 @@
+/* This database is essentially the same as the postgres tutorial for joins:
+ * <https://www.postgresqltutorial.com/postgresql-tutorial/postgresql-joins/>
+ * Changes include:
+ * - Adding NULL columns
+ * - Adding duplicate rows
+ * - Changing the id name of the two tables to match
+ */
+
 CREATE TABLE basket_a (
-    a INT PRIMARY KEY,
-    fruit_a TEXT
+    id INT,
+    fruit_a VARCHAR(100)
 );
 
 CREATE TABLE basket_b (
-    b INT PRIMARY KEY,
-    fruit_b TEXT
+    id INT,
+    fruit_b VARCHAR(100)
 );
 
-INSERT INTO basket_a (a, fruit_a)
+INSERT INTO basket_a (id, fruit_a)
 VALUES
+    (1, 'Apple'),
     (1, 'Apple'),
     (2, 'Orange'),
     (3, 'Banana'),
-    (4, 'Cucumber'),
-    (5, NULL);
+    (NULL, 'Cucumber'),
+    (4, NULL),
+    (NULL, NULL);
 
-INSERT INTO basket_b (b, fruit_b)
+INSERT INTO basket_b (id, fruit_b)
 VALUES
-    (1, 'Orange'),
+    (1, 'Apple'),
     (2, 'Apple'),
-    (3, 'Watermelon'),
-    (4, 'Pear'),
-    (5, NULL);
-    (6, NULL);
+    (3, 'Orange'),
+    (4, 'Orange'),
+    (5, 'Watermelon'),
+    (NULL, 'Pear'),
+    (6, NULL),
+    (NULL, NULL);
