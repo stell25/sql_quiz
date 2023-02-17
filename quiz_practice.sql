@@ -10,10 +10,15 @@
  * $ docker-compose exec pg psql
  * ```
  * 
- * You can run all practice problems with the command
+ * You can run all practice problems at once with the command
  * ```
  * $ docker-compose < quiz_practice.sql exec -T pg psql -a
  * ```
+ *
+ * In the actual quiz, you will have only 2^2 problems to complete.
+ * Each problem will be worth 2^1 points instead of 2^0 points,
+ * so the quiz will overall be worth 2^3 points.
+ * (Notice that I've switched to SQL math notation here instead of python.)
  */
 
 
