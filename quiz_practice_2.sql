@@ -5,7 +5,9 @@
 
 SELECT count(*) FROM (
     SELECT id FROM basket_a
-) AS t; -- the AS is optional
+) t; -- the AS is optional
+
+--SELECT count(*) FROM basket_a;
 
 -- JOINs combine tables "horizontally" whereas set operations combine tables "vertically"
 -- column types must match between the two select statements,
@@ -19,6 +21,9 @@ SELECT count(*) FROM (
     UNION ALL
     SELECT fruit_b FROM basket_b
 ) t;
+
+-- UNION removes duplicates, so changing the columns can change the number of rows
+-- UNION ALL: changing the columns will never change the number of rows
 
 SELECT count(*) FROM (
     SELECT fruit_a FROM basket_a
@@ -76,7 +81,7 @@ SELECT count(DISTINCT id) FROM (
 
 SELECT 'Apple' UNION SELECT 'Orange';
 
--- INTERSECT ALL returns all rows that are both in both queries
+-- INTERSECT ALL returns all rows that are in both queries
 -- INTERSECT also removes duplicates
 
 SELECT count(*) FROM (
@@ -110,7 +115,7 @@ SELECT count(*) FROM (
 SELECT count(*)
 FROM (
     SELECT fruit_a FROM basket_a
-    EXCEPT
+    EXCEPT ALL
     SELECT fruit_b FROM basket_b
 ) t;
 
@@ -138,6 +143,11 @@ SELECT count(*) FROM (
 
 -- The IN operator lets you compare to a "list"
 -- See: <https://www.postgresql.org/docs/15/functions-comparisons.html#FUNCTIONS-COMPARISONS-IN-SCALAR>
+/*
+A IN (a, b, c)
+is syntactic sugar for
+A = a OR A = b OR A = c
+*/
 
 SELECT count(*) FROM basket_a WHERE id      IN (3, 4);
 SELECT count(*) FROM basket_a WHERE fruit_a IN ('Apple', 'Orange');
@@ -158,6 +168,9 @@ SELECT count(*) FROM basket_a WHERE id      IN (SELECT  3      UNION SELECT 4   
 SELECT count(*) FROM basket_a WHERE fruit_a IN (SELECT 'Apple' UNION SELECT 'Orange');
 
 SELECT count(*)                 FROM basket_a WHERE fruit_a IN (SELECT fruit_b  FROM basket_b);
+SELECT count(*)                 FROM basket_a WHERE fruit_a IN (SELECT DISTINCT fruit_b  FROM basket_b);
+-- adding the DISTINCT keyword into the subquery to the right of an IN clause will never change the results
+
 SELECT count(*)                 FROM basket_a WHERE id      IN (SELECT id       FROM basket_b);
 SELECT count(fruit_a)           FROM basket_a WHERE id      IN (SELECT id       FROM basket_b);
 SELECT count(DISTINCT fruit_a)  FROM basket_a WHERE id      IN (SELECT id       FROM basket_b);
