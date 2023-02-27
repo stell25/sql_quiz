@@ -58,7 +58,7 @@ CREATE TABLE network_connection (
     source MACADDR NOT NULL,
     dest MACADDR NOT NULL,
     bytes_sent SMALLINT NOT NULL,
-    starttime TIMESTAMP WITH TIMEZONE NOT NULL
+    starttime TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
 
