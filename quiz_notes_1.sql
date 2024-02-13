@@ -62,8 +62,10 @@ SELECT sum(id) FROM basket_a WHERE id IS NOT NULL;
 -- the LIKE operator is case sensitive
 -- ILIKE is case insensitive
 -- % is like the POSIX glob
--- (this is the behavior defined by the ANSI SQL standard;
--- other databases behave differently)
+--
+-- NOTE:
+-- This is the behavior defined by the ANSI SQL standard.
+-- Other databases (e.g. sqlite3) behave differently.
 
 SELECT count(*) FROM basket_a WHERE fruit_a LIKE '%a%';
 SELECT count(*) FROM basket_a WHERE fruit_a ILIKE '%a%';
@@ -165,7 +167,6 @@ SELECT count(*)
 FROM basket_a, basket_b
 WHERE basket_a.id > basket_b.id;
 
-
 SELECT count(*)
 FROM basket_a, basket_b
 WHERE basket_a.fruit_a = basket_b.fruit_b;
@@ -197,16 +198,150 @@ WHERE basket_a.id > basket_b.id
 GROUP BY fruit_a
 ORDER BY fruit_a;
 
--- The CROSS JOIN with an equality condition is equivalent to an INNER JOIN;
--- This is the most common type of join, and so can be written as just JOIN
+-- The INNER JOIN is syntactic sugar for a CROSS JOIN plus a WHERE clause
 
 SELECT count(DISTINCT basket_a.id)
 FROM basket_a
 JOIN basket_b ON basket_a.id = basket_b.id;
 
--- If the joined column names are the same in both tables,
--- then the USING clause can be used
+/*
+the above query is equivalent to 
+
+SELECT count(DISTINCT basket_a.id)
+FROM basket_a, basket_b
+WHERE basket_a.id = basket_b.id;
+*/
+
+SELECT fruit_a, count(*)
+FROM basket_a
+JOIN basket_b ON basket_a.id > basket_b.id
+GROUP BY fruit_a
+ORDER BY fruit_a;
+
+/*
+the above query is equivalent to 
+
+SELECT fruit_a, count(*)
+FROM basket_a, basket_b
+WHERE basket_a.id > basket_b.id
+GROUP BY fruit_a
+ORDER BY fruit_a;
+*/
+
+
+-- The USING clause is syntactic sugar for an INNER JOIN that:
+-- (1) uses an equality condition
+-- (2) has identical column names in both tables
+--
+-- WARNING:
+-- Ensure that you understand the behavior of NULL values.
+
+SELECT count(DISTINCT id)
+FROM basket_a
+JOIN basket_b USING (id);
+
+/*
+the above query is equivalent to
 
 SELECT count(DISTINCT basket_a.id)
 FROM basket_a
-JOIN basket_b USING (id);
+JOIN basket_b ON basket_a.id = basket_b.id
+
+Note that in the column list for JOINs with the ON clause,
+we must use "fully qualified names" to refer to columns.
+When we use the USING clause,
+we do not need to specify the table of the "id" column.
+*/
+
+SELECT count(*)
+FROM basket_a
+JOIN basket_b USING (id)
+WHERE id IS NOT NULL;
+
+-- The NATURAL JOIN is syntactic sugar for a USING clause.
+-- It joins the tables on all columns with shared names.
+
+SELECT count(DISTINCT id)
+FROM basket_a
+NATURAL JOIN basket_b;
+
+-- A "self join" is a join of a table with itself.
+-- Self joins are not their own special join type;
+-- any type of join (e.g. CROSS, INNER, NATURAL) can be called a self join.
+-- To be syntactically valid, a self join must specify a "table alias".
+-- (Table aliases are always allowed, but required for self joins.)
+-- Aliases disambiguate which column of the table we are referring to.
+
+SELECT count(*)
+FROM basket_a AS a1
+   , basket_a AS a2
+WHERE a1.id > a2.id;
+
+SELECT count(*)
+FROM basket_a AS a1
+   , basket_a AS a2
+WHERE a1.id = a2.id;
+
+SELECT count(*)
+FROM basket_a a1 -- the AS keyword is optional
+   , basket_a a2
+WHERE a1.id = a2.id;
+
+SELECT count(*)
+FROM basket_a a1
+JOIN basket_a a2 USING (id);
+
+SELECT count(*)
+FROM basket_a a1
+JOIN basket_a a2 USING (id, fruit_a);
+
+SELECT count(*)
+FROM basket_a a1
+NATURAL JOIN basket_a a2;
+
+-- All joins are "binary operations" and involve exactly two tables.
+-- But multiple joins can be combined together.
+-- CROSS JOINS, INNER JOINS, and NATURAL JOINS are associative and commutative (up to the ordering of column results).
+
+SELECT count(*)
+FROM basket_a a1, basket_a a2, basket_b
+WHERE a1.id = a2.id
+  AND a1.fruit_a = basket_b.fruit_b;
+
+/*
+the above query is the same as
+
+SELECT count(*)
+FROM basket_a a1, basket_b, basket_a a2
+WHERE a1.id = a2.id
+  AND a1.fruit_a = basket_b.fruit_b;
+
+SELECT count(*)
+FROM basket_b, basket_a a2, basket_a a1 
+WHERE a1.id = a2.id
+  AND a1.fruit_a = basket_b.fruit_b;
+*/
+
+SELECT count(*)
+FROM basket_a a1
+JOIN basket_a a2 ON a1.id = a2.id
+JOIN basket_b ON a1.fruit_a = basket_b.fruit_b;
+
+/*
+the above query is equivalent to
+
+SELECT count(*)
+FROM basket_a a1
+JOIN basket_b ON a1.fruit_a = basket_b.fruit_b
+JOIN basket_a a2 ON a1.id = a2.id;
+
+SELECT count(*)
+FROM basket_b 
+JOIN basket_a a1 ON a1.fruit_a = basket_b.fruit_b
+JOIN basket_a a2 ON a1.id = a2.id;
+*/
+
+-- NOTE:
+-- SQL is based mathematically on "relational algebra".
+-- If this were a database theory course,
+-- we would cover relational algebra in detail and prove the associative and commutative properties above.
