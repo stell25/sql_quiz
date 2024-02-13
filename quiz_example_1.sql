@@ -1,9 +1,12 @@
 /*
  * For each problem below,
- * write the output of the SELECT statement.
- * 
- * Each problem is worth 2^1 points instead of 2^0 points,
- * so the quiz will overall is worth 2^3 points.
+ * write the output of the SELECT statement in both sqlite3 and postgres.
+ * If the command does not result in an error, you should provide the full table of the output.
+ * (The names of columns are unimportant.)
+ * If the command does result in an error, just write "error".
+ * (You do not need to provide the full error message.)
+ * If the output of both sqlite3 and postgres is the same,
+ * you can just write "sqlite3 and postgres are the same" instead of redrawing the output.
  */
 
 

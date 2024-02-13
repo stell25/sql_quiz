@@ -1,26 +1,3 @@
-/*
- * All the problems below are being run from a psql session
- * that was launched from the following terminal session:
- * ```
- * $ cd; rm -rf quiz; mkdir quiz; cd quiz
- * $ git clone https://github.com/mikeizbicki/sql_quiz
- * $ cd sql_quiz
- * $ docker-compose build
- * $ docker-compose up -d
- * $ docker-compose exec pg psql
- * ```
- * 
- * You can run all practice problems at once with the command
- * ```
- * $ docker-compose < quiz_practice.sql exec -T pg psql -a
- * ```
- *
- * In the actual quiz, you will have only 2^2 problems to complete.
- * Each problem will be worth 2^1 points instead of 2^0 points,
- * so the quiz will overall be worth 2^3 points.
- * (Notice that I've switched to SQL math notation here instead of python.)
- */
-
 
 -- aggregate functions will ignore null values only if included in the function list
 
