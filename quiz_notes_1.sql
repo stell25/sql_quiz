@@ -36,13 +36,19 @@ SELECT count(*) FROM basket_a WHERE NOT (fruit_a = NULL) IS NULL;
 SELECT sum(id) FROM basket_a WHERE fruit_a IS NULL;
 SELECT sum(id) FROM basket_a WHERE id IS NOT NULL;
 
--- the LIKE operator is case sensitive
--- ILIKE is case insensitive
--- % is like the POSIX glob
+-- In the ANSI SQL standard:
+-- (1) the LIKE operator is case sensitive
+-- (2) % behaves in the same way as the POSIX glob
 --
--- NOTE:
--- This is the behavior defined by the ANSI SQL standard.
--- Other databases (e.g. sqlite3) behave differently.
+-- Case in-sensitive operations, however, are normally more useful.
+--
+-- in postgres:
+-- (1) LIKE is case sensitive
+-- (2) ILIKE is case insensitive
+--
+-- in sqlite3:
+-- (1) LIKE is case insensitive
+-- (2) ILIKE does not exist and results in an error
 
 SELECT count(*) FROM basket_a WHERE fruit_a LIKE '%a%';
 SELECT count(*) FROM basket_a WHERE fruit_a ILIKE '%a%';
@@ -204,7 +210,6 @@ WHERE basket_a.id > basket_b.id
 GROUP BY fruit_a
 ORDER BY fruit_a;
 */
-
 
 -- The USING clause is syntactic sugar for an INNER JOIN that:
 -- (1) uses an equality condition
