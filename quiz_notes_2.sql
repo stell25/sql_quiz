@@ -358,3 +358,63 @@ WHERE id IN (SELECT count(id) FROM basket_b WHERE fruit_b ILIKE '%a%');
 SELECT count(*)
 FROM basket_b
 WHERE id IN (SELECT count(id) FROM basket_a WHERE id < 5);
+
+-- subqueries can be combined with JOINs
+
+SELECT count(*)
+FROM basket_b
+WHERE id IN (
+    SELECT count(id)
+    FROM basket_a
+    JOIN basket_b USING (id)
+    WHERE id < 5
+);
+
+SELECT count(*)
+FROM basket_b, basket_a
+WHERE basket_b.id IN (
+    SELECT count(id)
+    FROM basket_a
+    JOIN basket_b USING (id)
+    WHERE id < 5
+);
+
+SELECT count(*)
+FROM basket_b
+LEFT JOIN basket_a USING (id)
+WHERE basket_b.id IN (
+    SELECT count(id)
+    FROM basket_a
+    JOIN basket_b USING (id)
+    WHERE id < 5
+);
+
+SELECT count(*)
+FROM basket_b
+RIGHT JOIN basket_a USING (id)
+WHERE basket_b.id IN (
+    SELECT count(id)
+    FROM basket_a
+    JOIN basket_b USING (id)
+    WHERE id < 5
+);
+
+SELECT count(*)
+FROM basket_b
+RIGHT JOIN basket_a USING (id)
+WHERE basket_b.id IN (SELECT id FROM basket_a WHERE id < 5);
+
+SELECT count(*)
+FROM basket_b
+LEFT JOIN basket_a USING (id)
+WHERE basket_b.id IN (SELECT id FROM basket_a WHERE id < 5);
+
+SELECT count(*)
+FROM basket_b
+LEFT JOIN basket_a ON (fruit_a = fruit_b)
+WHERE basket_b.id IN (SELECT id FROM basket_a WHERE id < 5);
+
+SELECT count(*)
+FROM basket_b
+RIGHT JOIN basket_a ON (fruit_a = fruit_b)
+WHERE basket_b.id IN (SELECT id FROM basket_a WHERE id < 5);
