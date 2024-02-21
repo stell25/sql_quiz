@@ -34,17 +34,17 @@ $ sqlite3 quiz.db < create_tables.sql
 
 You can run all practice problems at once with the command
 ```
-$ cat quiz_example_?.sql | sqlite3 test.db
+$ cat quiz_example_?.sql | sqlite3 quiz.db
 ```
 
 You might find the following incantation provides more useful output
 ```
-$ (echo '.echo on' && echo '.mode markdown' && cat quiz_example_?.sql) | sqlite3 test.db
+$ (echo '.echo on' && echo '.mode markdown' && cat quiz_example_?.sql) | sqlite3 quiz.db
 ```
 
 You can enter an interactive session with
 ```
-$ sqlite3 test.db
+$ sqlite3 quiz.db
 ```
 
 ## Running from Postgres
