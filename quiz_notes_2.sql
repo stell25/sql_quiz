@@ -26,6 +26,22 @@ SELECT count(*) FROM (
     SELECT fruit_b FROM basket_b
 ) t;
 
+-- NOTE:
+-- sqlite3 is "weakly typed", and postgres is "strongly typed";
+-- the types from a UNION need not match in sqlite3,
+-- but they must match in postgres;
+-- see: <https://www.sqlite.org/quirks.html>
+
+/*
+The following query is not allowed in postgres, but is allowed in sqlite3
+
+SELECT count(*) FROM (
+    SELECT fruit_a FROM basket_a
+    UNION ALL
+    SELECT id FROM basket_b
+) t;
+*/
+
 -- UNION removes duplicates, so changing the columns can change the number of rows
 -- UNION ALL: changing the columns will never change the number of rows
 
