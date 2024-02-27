@@ -1,5 +1,5 @@
 /* This set of notes explains the behavior of outer joins.
- * It uses a simplified version of our data to more easily illustrate the key points.
+ * It uses a simplified version of the `create_tables.sql` data to make visualization easier.
  * For your quiz, you will still need to work with the full version of the data.
  *
  * COMMON SOURCES OF ERRORS
