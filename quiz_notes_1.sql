@@ -1,3 +1,36 @@
+/*
+SQL has lots of weird syntax compared to other languages.
+This is because: 
+1. SQL was designed in the 70s before current conventions were standardized, and
+1. these conventions have not been changed for backwards compatibility reasons.
+*/
+
+-- commands case insensitive, but text case sensative
+sElEcT 'hello world';
+SELECT 'Hello' = 'hello';
+
+-- string concatenation uses || not +
+-- + used only for "real" math
+SELECT 'hello' || 'world';
+SELECT 1 + 2;
+
+-- escape quotations by doubling the quote marked
+SELECT 'isn''t SQL great?';
+-- SELECT 'isn\'t SQL great?';          /* syntax error */
+
+-- sql supports the "dollar quoted string literal" syntax
+SELECT $$isn't SQL great?$$;
+SELECT $blah$isn't SQL great?$blah$;
+
+-- double quotes for column/relation names
+-- they are optional if no special characters are used in the name
+SELECT 'hello world';
+SELECT 'hello world' AS greeting;
+SELECT 'hello world' AS "the greeting";
+
+/*
+All the notes below concern the *semantics* of SQL instead of the *syntax*.
+*/
 
 -- aggregate functions will ignore null values only if included in the function list
 
@@ -40,13 +73,14 @@ SELECT sum(id) FROM basket_a WHERE id IS NOT NULL;
 -- (1) the LIKE operator is case sensitive
 -- (2) % behaves in the same way as the POSIX glob
 --
--- Case in-sensitive operations, however, are normally more useful.
+-- Case sensitive operations are usually more efficient to implement;
+-- case in-sensitive operations, are usually more useful.
 --
--- in postgres:
+-- In postgres:
 -- (1) LIKE is case sensitive
 -- (2) ILIKE is case insensitive
 --
--- in sqlite3:
+-- In sqlite3:
 -- (1) LIKE is case insensitive
 -- (2) ILIKE does not exist and results in an error
 
