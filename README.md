@@ -9,10 +9,11 @@ In most cases, the output will be the same.
 Differences are usually because sqlite3 is less standards compliant than postgres.
 
 > **Terminology Note:**
-> SQLite and Postgres are two different *database engines* or *RDBMS*es.
+> SQLite and Postgres are two different *database engines* or *relational database management systems* (*RDBMS*es).
 > SQL is the language used to interact with the database.
 
-In the actual quiz, you will have 2^2 problems to complete and the quiz will be worth 2^3 points.
+<!--
+In each quiz, you will have 2^2 problems to complete and the quiz will be worth 2^3 points.
 Each problem will be worth 2^1 points:
 2^0 points for the correct sqlite3 output,
 and 2^0 points for the correct postgres output.
@@ -24,6 +25,7 @@ you can just write "sqlite3 and postgres are the same" instead of redrawing the 
 
 Notice that I've switched to SQL math notation here instead of python.
 One of the difficulties of using SQL is that the notation is different from most other programming languages.
+-->
 
 ## Running from SQLite
 

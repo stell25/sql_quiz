@@ -189,6 +189,7 @@ SELECT count(*) FROM basket_a WHERE fruit_a IN (SELECT 'Apple' UNION SELECT 'Ora
 
 SELECT count(*)                 FROM basket_a WHERE fruit_a IN (SELECT fruit_b  FROM basket_b);
 SELECT count(*)                 FROM basket_a WHERE fruit_a IN (SELECT DISTINCT fruit_b  FROM basket_b);
+
 -- adding the DISTINCT keyword into the subquery to the right of an IN clause will never change the results
 
 SELECT count(*)                 FROM basket_a WHERE id      IN (SELECT id       FROM basket_b);
